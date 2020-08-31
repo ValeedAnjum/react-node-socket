@@ -1,8 +1,11 @@
 const express = require("express");
 const app = express();
+const socketio = require("socket.io");
+const http = require("http");
 
-app.get("/", (req, res) => {
-  res.send("API RUNNING SCOKET.IO");
-});
+const PORT = process.env.PORT || 5000;
 
-app.listen(5000, () => console.log("Srever is running at port 5000"));
+const server = http.createServer(app);
+const io = socketio(server);
+
+server.listen(PORT, () => console.log(`Server is running at PORT ${PORT} `));
