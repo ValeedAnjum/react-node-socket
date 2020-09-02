@@ -16,7 +16,7 @@ io.on("connection", (socket) => {
     console.log(name, room);
   });
 
-  io.on("disconnect", () => {
+  socket.on("disconnect", () => {
     console.log("User had left");
   });
 });
