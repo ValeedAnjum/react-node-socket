@@ -13,7 +13,7 @@ const io = socketio(server);
 
 //on new connection and disconnection
 io.on("connection", (socket) => {
-  //fires when a new user join
+  //fire when a new user join
   socket.on("join", ({ name, room }, callback) => {
     const { error, user } = addUser({ id: socket.id, name, room });
     if (error) return callback(error);
