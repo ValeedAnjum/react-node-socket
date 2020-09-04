@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const socketio = require("socket.io");
 const http = require("http");
+const cors = require("cors");
 const router = require("./router");
 const PORT = process.env.PORT || 5000;
 const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
@@ -26,6 +27,11 @@ io.on("connection", (socket) => {
       .emit("message", { user: "admin", text: `${user.name}, has joined` });
     socket.join(user.room);
 
+    io.to(user.room).emit("roomData", {
+      room: user.room,
+      users: getUsersInRoom(user.room),
+    });
+
     callback();
   });
 
@@ -45,9 +51,15 @@ io.on("connection", (socket) => {
         user: "admin",
         text: `${user.name} has left.`,
       });
+      //when user leaves send upto date data to all users;
+      io.to(user.room).emit("roomData", {
+        room: user.room,
+        users: getUsersInRoom(user.room),
+      });
     }
   });
 });
 
 app.use(router);
+app.use(cors());
 server.listen(PORT, () => console.log(`Server is running at PORT ${PORT} `));
