@@ -1,0 +1,17 @@
+.messages {
+  overflow: auto;
+  flex: auto;
+}
+.css-y1c0xs::-webkit-scrollbar {
+  width: 10px;
+}
+.css-y1c0xs::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.css-y1c0xs::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 50px;
+}
+.css-y1c0xs::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
