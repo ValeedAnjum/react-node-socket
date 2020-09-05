@@ -13,7 +13,8 @@ const Chat = ({ location }) => {
   const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const ENDPOINT = "https://react-node-socket.herokuapp.com/";
+  // const ENDPOINT = "https://react-node-socket.herokuapp.com/";
+  const ENDPOINT = "http://localhost:5000/";
   useEffect(() => {
     const { Name, Room } = queryString.parse(location.search);
     socket = io(ENDPOINT);
@@ -41,7 +42,15 @@ const Chat = ({ location }) => {
       socket.emit("sendMessage", message, () => setMessage(""));
     }
   };
-  console.log(messages);
+  const handleUserMedia = () => {
+    let file = document.querySelector("input[type=file]").files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      setMessage(reader.result);
+      console.log("se");
+    };
+  };
   return (
     <div className="outerContainer">
       <div className="container">
@@ -52,6 +61,7 @@ const Chat = ({ location }) => {
           setMessage={setMessage}
           message={message}
         />
+        <input type="file" name="user-media" onChange={handleUserMedia} />
       </div>
     </div>
   );
