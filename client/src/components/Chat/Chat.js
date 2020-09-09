@@ -10,7 +10,6 @@ let socket;
 const Chat = ({ location }) => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
-  const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   // const ENDPOINT = "https://react-node-socket.herokuapp.com/";
@@ -25,6 +24,7 @@ const Chat = ({ location }) => {
     });
 
     return () => {
+      console.log("disconnect");
       socket.emit("disconnect");
       socket.off();
     };
@@ -32,12 +32,14 @@ const Chat = ({ location }) => {
 
   useEffect(() => {
     socket.on("message", (message) => {
-      setMessages([...messages, message]);
+      // console.log("mgs", messages);
+      // console.log("m", message);
+      setMessages((msg) => [...msg, message]);
+      // console.log("mgs", messages);
     });
-  }, [messages]);
+  }, []);
   const sendMessage = (event) => {
     event.preventDefault();
-
     if (message) {
       socket.emit("sendMessage", message, () => setMessage(""));
     }
@@ -51,6 +53,7 @@ const Chat = ({ location }) => {
       console.log("se");
     };
   };
+  console.log(messages);
   return (
     <div className="outerContainer">
       <div className="container">

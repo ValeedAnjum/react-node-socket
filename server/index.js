@@ -17,11 +17,12 @@ io.on("connection", (socket) => {
   socket.on("join", ({ name, room }, callback) => {
     const { error, user } = addUser({ id: socket.id, name, room });
     if (error) return callback(error);
-
+    //send message to the current user
     socket.emit("message", {
       user: "admin",
       text: `${user.name}, welcome to the room ${user.room}`,
     });
+    //send message to the whole room except the current user
     socket.broadcast
       .to(user.room)
       .emit("message", { user: "admin", text: `${user.name}, has joined` });
@@ -34,7 +35,7 @@ io.on("connection", (socket) => {
 
     callback();
   });
-
+  //send message to all users in a specific room
   socket.on("sendMessage", (message, callback) => {
     const user = getUser(socket.id);
     io.to(user.room).emit("message", { user: user.name, text: message });
